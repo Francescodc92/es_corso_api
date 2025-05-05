@@ -1,10 +1,10 @@
 import { FastifyInstance } from "fastify";
-import { createArtist, getArtists } from "../controllers/artistController";
+import { createArtist, getArtistById, getArtists } from "../controllers/artistController";
 
 export const artistsRoutes = async (app: FastifyInstance) => {
     app.get("/", getArtists)
 
-    app.get('/:id', () => {});
+    app.get('/:id', getArtistById);
     
     app.post('/', createArtist);
     
