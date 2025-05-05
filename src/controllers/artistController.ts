@@ -141,3 +141,42 @@ export const updateArtist = async (
     return reply.status(500).send({ error: "Internal Server Error" });
   }
 };
+
+export const deleteArtist = async (
+  req: FastifyRequest,
+  reply: FastifyReply
+) => {
+  const deleteArtistSchema = z.object({
+    id: z.string().uuid(),
+  });
+  try {
+    const { id } = deleteArtistSchema.parse(req.params);
+
+    const artist = await prisma.artist.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!artist) {
+      return reply.status(404).send({ error: "Artist not found" });
+    }
+
+    await prisma.artist.delete({
+      where: {
+        id,
+      },
+    });
+
+    return reply.status(204).send();
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return reply.status(400).send({
+        message: "Error during validation",
+        error: error.flatten().fieldErrors,
+      });
+    }
+
+    return reply.status(500).send({ error: "Internal Server Error" });
+  }
+};

@@ -1,6 +1,7 @@
 import { FastifyInstance } from "fastify";
 import {
   createArtist,
+  deleteArtist,
   getArtistById,
   getArtists,
   updateArtist,
@@ -15,5 +16,5 @@ export const artistsRoutes = async (app: FastifyInstance) => {
 
   app.put("/:id", updateArtist);
 
-  app.delete("/:id", () => {});
+  app.delete("/:id", deleteArtist);
 };
